@@ -34,6 +34,10 @@ static SGPinYinSortType _sortType = SGPinYinSortTypeByFull;
     
     for (NSString* object in tempArray) {
         NSString *pinyin = [((SGPinyinSort*)object).pinYin substringToIndex:1];
+        char h = pinyin.UTF8String[0];
+        if (h < 'A' || h > 'z') {
+            pinyin = @"#";
+        }
         //不同
         if(![tempString isEqualToString:pinyin])
         {
@@ -66,6 +70,10 @@ static SGPinYinSortType _sortType = SGPinYinSortTypeByFull;
     for (NSString* object in tempArray) {
         
         NSString *pinyin = [((SGPinyinSort*)object).pinYin substringToIndex:1];
+        char h = pinyin.UTF8String[0];
+        if (h < 'A' || h > 'z') {
+            pinyin = @"#";
+        }
         NSString *string = ((SGPinyinSort*)object).string;
         //不同
         if(![tempString isEqualToString:pinyin])
@@ -93,6 +101,10 @@ static SGPinYinSortType _sortType = SGPinYinSortTypeByFull;
     for (NSString* object in tempArray)
     {
         NSString *pinyin = [((SGPinyinSort*)object).pinYin substringToIndex:1];
+        char h = pinyin.UTF8String[0];
+        if (h < 'A' || h > 'z') {
+            pinyin = @"#";
+        }
         //不同
         if(![tempString isEqualToString:pinyin])
         {
@@ -114,6 +126,10 @@ static SGPinYinSortType _sortType = SGPinYinSortTypeByFull;
     for (SGPinyinSort* object in tempArray) {
         
         NSString *pinyin = [object.pinYin substringToIndex:1];
+        char h = pinyin.UTF8String[0];
+        if (h < 'A' || h > 'z') {
+            pinyin = @"#";
+        }
         id obj = object.object;
         //不同
         if(![tempString isEqualToString:pinyin])

@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-NS_ASSUME_NONNULL_BEGIN
 @interface CFSearchResult : NSObject
 
 /* 匹配 */
@@ -39,5 +38,3 @@ NS_ASSUME_NONNULL_BEGIN
                                     byPropertyNames:(NSArray <NSString *>*)propertyNames
                                               error:(NSError **)error;
 @end
-
-NS_ASSUME_NONNULL_END

@@ -65,9 +65,11 @@
         }else {
             // 模型或者字典
             //NSError **errorCatch = error;
+            __block NSError *errorInfo = nil;
             [propertyNames enumerateObjectsUsingBlock:^(NSString * _Nonnull ivar, NSUInteger idx, BOOL * _Nonnull stop) {
                 
                 NSString * searchString = nil;
+                
                 @try {
                     searchString = [NSString stringWithFormat:@"%@",[elemt valueForKey:ivar]] ;
                     if (!isContianerChinese && searchString.sg_isIncludeChinese) {
@@ -75,9 +77,8 @@
                         searchString = [searchString transformToPinyin];
                     }
                 } @catch (NSException *exception) {
-                    if (error) {
-                        *error = [NSError errorWithDomain:@"不存在该属性" code:100 userInfo:@{@"elemt" : elemt, @"exception" : exception,@"index" : @(i)}];
-                    }
+                    errorInfo  = [NSError errorWithDomain:@"不存在该属性" code:100 userInfo:@{@"elemt" : elemt, @"exception" : exception,@"index" : @(i)}];
+                    
                 } @finally {
                     
                 }
@@ -89,6 +90,10 @@
                     *stop = YES;
                 }
             }];
+            
+            if (errorInfo && error) {
+                *error = errorInfo;
+            }
         }
     }
     
@@ -101,5 +106,3 @@
     return nil;
 }
 @end
-
-

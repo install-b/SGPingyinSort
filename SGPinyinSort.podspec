@@ -2,7 +2,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "SGPinyinSort"
-  s.version      = "0.0.1"
+  s.version      = "0.1.0"
   s.summary      = "Chinese pinyin sort"
 
   s.description  = <<-DESC
@@ -20,11 +20,22 @@ Pod::Spec.new do |s|
  
 
   s.source       = { :git => "https://github.com/install-b/SGPingyinSort.git", :tag => s.version }
-  s.source_files  = "SGPinyinSort/*.{h,m}"
-  s.public_header_files = "SGPinyinSort/*.h"
 
 
-  s.framework  = "Foundation"
+
+  s.subspec 'PinyinSort' do |so|
+  	so.framework = "Foundation"
+  	so.source_files  = "SGPinyinSort/*.{h,m}"
+    so.public_header_files = "SGPinyinSort/*.h"
+  end
+
+  s.subspec 'PinyinSearch' do |se|
+  	se.dependency 'SGPinyinSort/PinyinSort'
+  	se.framework = "Foundation"
+  	se.source_files  = "SGPinYinSearch/*.{h,m,txt}"
+    se.public_header_files = "SGPinYinSearch/*.h"
+  end
+
   
 
   s.requires_arc = true

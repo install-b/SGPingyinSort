@@ -80,7 +80,11 @@
                     errorInfo  = [NSError errorWithDomain:@"不存在该属性" code:100 userInfo:@{@"elemt" : elemt, @"exception" : exception,@"index" : @(i)}];
                     
                 } @finally {
-                    
+                    searchString = [NSString stringWithFormat:@"%@",[elemt valueForKeyPath:ivar]] ;
+                    if (!isContianerChinese && searchString.sg_isIncludeChinese) {
+                        // 转拼音后
+                        searchString = [searchString transformToPinyin];
+                    }
                 }
                 
                 NSRange result= [searchString rangeOfString:searchText options:NSCaseInsensitiveSearch];

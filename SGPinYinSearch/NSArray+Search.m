@@ -69,24 +69,28 @@
             [propertyNames enumerateObjectsUsingBlock:^(NSString * _Nonnull ivar, NSUInteger idx, BOOL * _Nonnull stop) {
                 
                 NSString * searchString = nil;
-                
-                @try {
-                    searchString = [NSString stringWithFormat:@"%@",[elemt valueForKey:ivar]] ;
-                    if (!isContianerChinese && searchString.sg_isIncludeChinese) {
-                        // 转拼音后
-                        searchString = [searchString transformToPinyin];
+                if ([ivar containsString:@"."]) {
+                    @try {
+                        searchString = [NSString stringWithFormat:@"%@",[elemt valueForKeyPath:ivar]] ;
+                        if (!isContianerChinese && searchString.sg_isIncludeChinese) {
+                            // 转拼音后
+                            searchString = [searchString transformToPinyin];
+                        }
+                    } @catch (NSException *exception) {
+                        errorInfo  = [NSError errorWithDomain:@"不存在该属性路径" code:100 userInfo:@{@"elemt" : elemt, @"exception" : exception,@"index" : @(i)}];
                     }
-                } @catch (NSException *exception) {
-                    errorInfo  = [NSError errorWithDomain:@"不存在该属性" code:100 userInfo:@{@"elemt" : elemt, @"exception" : exception,@"index" : @(i)}];
-                    
-                } @finally {
-                    searchString = [NSString stringWithFormat:@"%@",[elemt valueForKeyPath:ivar]] ;
-                    if (!isContianerChinese && searchString.sg_isIncludeChinese) {
-                        // 转拼音后
-                        searchString = [searchString transformToPinyin];
+                }else {
+                    @try {
+                        searchString = [NSString stringWithFormat:@"%@",[elemt valueForKey:ivar]] ;
+                        if (!isContianerChinese && searchString.sg_isIncludeChinese) {
+                            // 转拼音后
+                            searchString = [searchString transformToPinyin];
+                        }
+                    } @catch (NSException *exception) {
+                        errorInfo  = [NSError errorWithDomain:@"不存在该属性" code:100 userInfo:@{@"elemt" : elemt, @"exception" : exception,@"index" : @(i)}];
+                        
                     }
                 }
-                
                 NSRange result= [searchString rangeOfString:searchText options:NSCaseInsensitiveSearch];
                 if (result.length) {
                     CFSearchResult *resultObj = [[CFSearchResult alloc] initWithRriginElemt:elemt matchedRange:result matchedProperty:ivar];

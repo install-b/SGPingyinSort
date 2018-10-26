@@ -190,7 +190,7 @@ static SGPinYinSortType _sortType = SGPinYinSortTypeByFull;
                 NSData *uniData = [[NSString stringWithUTF8String:originStr.UTF8String] dataUsingEncoding:NSNonLossyASCIIStringEncoding];
                 NSString *goodStr = [[NSString alloc] initWithData:uniData encoding:NSUTF8StringEncoding] ;
                 if (![goodStr isEqualToString:originStr]) {
-                    goodStr = @"#";
+                    chineseString.string = goodStr;
                     chineseString.pinYin = @"#";
                 }
             }
@@ -214,7 +214,7 @@ static SGPinYinSortType _sortType = SGPinYinSortTypeByFull;
             
             //首字母大写
             chineseString.pinYin = [chineseString.string capitalizedString] ;
-        }else{
+        }else if(chineseString.pinYin.length == 0){
             if(![chineseString.string isEqualToString:@""]){
                 NSString *pinYinResult = [NSString string];
                 NSString *singlePinyinLetter = nil;

@@ -161,6 +161,15 @@ static SGPinYinSortType _sortType = SGPinYinSortTypeByFull;
 
 
 #pragma mark - sort
++ (BOOL)sg_hasEmojiPrefxWithString:(NSString *)str {
+    if (str.length) {
+        unichar ch = [str characterAtIndex:0];
+        if (0x4e00 > ch  || ch > 0x9fff) {
+            return true;
+        }
+    }
+    return NO;
+}
 +(NSMutableArray*)returnSortObjectArrar:(NSArray*)stringArr key:(NSString *)key {
     
     //获取字符串中文字的拼音首字母并与字符串共同存放
@@ -171,8 +180,20 @@ static SGPinYinSortType _sortType = SGPinYinSortTypeByFull;
         if (key) { // 对象
             //获取对象对应字段的字符串
             id temp = [stringArr objectAtIndex:i];
-            chineseString.string = [NSString stringWithFormat:@"%@",[temp valueForKeyPath:key]];
+            NSString *originStr = [NSString stringWithFormat:@"%@",[temp valueForKeyPath:key]];
+            
+            chineseString.string = originStr;
             chineseString.object = temp;
+            
+            // #号处理
+            if ([self sg_hasEmojiPrefxWithString:originStr]) {
+                NSData *uniData = [[NSString stringWithUTF8String:originStr.UTF8String] dataUsingEncoding:NSNonLossyASCIIStringEncoding];
+                NSString *goodStr = [[NSString alloc] initWithData:uniData encoding:NSUTF8StringEncoding] ;
+                if (![goodStr isEqualToString:originStr]) {
+                    goodStr = @"#";
+                    chineseString.pinYin = @"#";
+                }
+            }
             
         }else { // 字符串
             chineseString.string = [NSString stringWithString:[stringArr objectAtIndex:i]];

@@ -2,7 +2,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "SGPinyinSort"
-  s.version      = "0.1.2"
+  s.version      = "0.1.3"
   s.summary      = "Chinese pinyin sort"
 
   s.description  = <<-DESC
